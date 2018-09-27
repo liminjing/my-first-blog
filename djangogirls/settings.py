@@ -25,7 +25,7 @@ SECRET_KEY = '=q+&tstbcqmb4r--r^bftln^3^_ca7um*w=!_&%jo$#99))%r)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['http://maggy.pythonanywhere.com/',
+ALLOWED_HOSTS = ['maggy.pythonanywhere.com',
                  '127.0.0.1',
                  'localhost']
 

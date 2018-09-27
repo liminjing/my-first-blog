@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import include,url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    #把访问'http://127.0.0.1:8000/'的请求转到 blog.urls
+    url(r'',include('blog.urls'))
+
 ]

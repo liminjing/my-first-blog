@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ziqiangxuetang</title>
+</head>
+<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+<body>
+
+<h2>url</h2>
+<a href="/test/add/4/5">计算 4+5 (href=/test/add/4/5)</a>
+<br>
+<a href="{% url 'add2' 4 5 %}">计算 4+5 ( url 'add2' 4 5)</a>
+
+<br>
+<h2>form 表单</h2>
+<h3>get方式</h3>
+<p>相同于：http://localhost:8000/test/add/?a=4&b=11 方式</p>
+<form method="get" action="test/add">
+    a:<input type="text" name="a"><br>
+    b:<input type="text" name="b"><br>
+    <button type="submit">submit</button>
+</form>
+
+<h3>post方式</h3>
+<p>django表单，更安全（推荐）</p>
+<form method="post" action="">{% csrf_token %}
+    {{ form }}
+    <button type="submit">submit</button>
+</form>
+
+<h3>发送邮件测试</h3>
+<form method="post" action="email_to">{% csrf_token %}
+   Email to: <input name="email_to">
+    Content: <input name="content">
+    <button type="submit">submit</button>
+</form>
+
+<h3>Ajax</h3>
+    a:<input type="text" id="a">
+    b:<input type="text" id="b">
+    <p>result: <span id="result"></span> </p>
+    <button id="sum">submit</button>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#sum').click(function () {
+             var a=$('#a').val();
+             var b=$('#b').val();
+
+             /* 等同于
+             $.get('test/add',{'a':a,'b':b},function (data) {
+                 $('#result').html(data)
+             });
+             */
+
+             $.ajax({
+                 url:'test/add',
+                 type:'GET',
+                 data:{'a':a,'b':b},
+                 success:function (result) {
+                     $('#result').html(result)
+                 },
+                 error:function () {
+                     $('#result').html('error!')
+                 }
+             })
+        });
+
+    });
+</script>
+
+<br>
+<br>
+<h3 id="list">Ajax加载列表</h3>
+<p id="list_result"></p>
+
+<h3 id="dict">Ajax加载字典</h3>
+<p id="dict_result"></p>
+
+<h3 id="list_dict">Ajax加载复杂列表</h3>
+<p id="list_dict_result"></p>
+
+<script>
+    //加载列表
+        $('#list').click(function () {
+        //$.getJSON('ajax_list',function (res) {
+            $.getJSON("{% url 'ajax_list' %}",function (res) {  //更灵活用法:url
+            for (i in res) {
+                $('#list_result').append(i+':'+res[i]+'<br>') //i为索引
+            }
+
+            //等同于
+            $.each(res,function (i,item) {
+                $('#list_result').append(i+'-'+item+'<br>')
+            })
+        })
+    });
+
+    //加载字典
+        $('#dict').click(function () {
+           // $.getJSON('ajax_dict',function (res) {
+            $.getJSON("{% url 'ajax_dict' %}",function (res) {
+                for (i in res){
+                    $('#dict_result').append(i+':'+res[i]+'<br>')
+                }
+
+                //等同于
+                $.each(res,function (key,value) {
+                    $('#dict_result').append(key+'-'+value+'<br>')
+                })
+            })
+        });
+
+    //加载复杂列表
+        $('#list_dict').click(function () {
+          //  $.getJSON('ajax_list_dict',function (res) {
+            $.getJSON("{% url 'ajax_list_dict' %}",function (res) {
+                $.each(res,function (i,item) {
+                    $.each(item,function (key,value) {
+                        $('#list_dict_result').append(key+':'+value+', ')
+                    });
+                    $('#list_dict_result').append('<br>')
+                })
+            })
+        });
+</script>
+</body>
+</html>

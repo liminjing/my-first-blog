@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog'
+
+    #my apps
+    'blog',
+    'ziqiang',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +130,13 @@ STATIC_URL = '/static/'
 
 #添加静态文件路径
 STATIC_ROOT=os.path.join(BASE_DIR,'static')
+
+#发送邮件配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #需开启stmp服务
+
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'maggy_li@163.com' # 帐号
+EMAIL_HOST_PASSWORD = 'maggy456'  # 客户端授权码
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
